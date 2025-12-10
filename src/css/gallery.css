@@ -61,7 +61,7 @@
   transform: scale(1.05);
 }
 
-.gallery.loading::after {
+.loader {
   content: 'Loading...';
   display: block;
   text-align: center;
@@ -69,8 +69,11 @@
   color: #4e75ff;
   padding: 20px 0;
 }
+.loader.is-hidden {
+  display: none;
+}
+
 .load-more {
-  display: block;
   margin: 20px auto;
   padding: 10px 20px;
   font-size: 16px;

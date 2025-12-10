@@ -2,13 +2,18 @@ import { getImagesByQuery } from "./js/pixabay-api";
 import { createGallery, clearGallery, showLoader, hideLoader, showLoadMoreButton, hideLoadMoreButton } from "./js/render-functions";
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
+import { clearForm } from "./js/render-functions";
 
 const form = document.querySelector(".form");
+const gallery = document.querySelector(".gallery");
 const loadMoreBtn = document.querySelector(".load-more");
+const loader = document.querySelector(".loader")
+const perPage = 15;
 
 let query = "";
 let page = 1;
 let totalHits = 0;
+
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -23,9 +28,9 @@ form.addEventListener("submit", async (e) => {
     }
 
     page = 1;
-    clearGallery();
-    hideLoadMoreButton();
-    showLoader();
+    clearGallery(gallery);
+    hideLoadMoreButton(loadMoreBtn);
+    showLoader(loader);
 
     try {
         const data = await getImagesByQuery(query, page);
@@ -39,18 +44,18 @@ form.addEventListener("submit", async (e) => {
             return;
         }
 
-        createGallery(data.hits);
-        if (page * 15 < totalHits) {
+        createGallery(data.hits, gallery);
+
+        if (data.hits.length === perPage && page * perPage < totalHits) {
             showLoadMoreButton();
-        } else {
-            hideLoadMoreButton();
-        }
+        } 
+         
     } catch (err) {
         iziToast.error({ message: "Error fetching images", position: "topRight" });
         console.error(err);
     } finally {
-        hideLoader();
-        form.reset()
+        hideLoader(loader);
+        clearForm(form);
     }
 });
 
@@ -63,10 +68,10 @@ loadMoreBtn.addEventListener("click", async () => {
         createGallery(data.hits);
 
         const { height: cardHeight } =
-            document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
+            gallery.firstElementChild.getBoundingClientRect();
         window.scrollBy({ top: cardHeight * 2, behavior: "smooth" });
 
-        if (page * 15 >= totalHits) {
+        if (page * perPage >= totalHits) {
             hideLoadMoreButton();
             iziToast.info({
                 message: "We're sorry, but you've reached the end of search results.",

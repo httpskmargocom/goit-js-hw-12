@@ -47,3 +47,6 @@ export function showLoadMoreButton() {
 export function hideLoadMoreButton() {
     loadMoreBtn.hidden = true;
 }
+export function clearForm(formElement) {
+    formElement.reset();
+}
