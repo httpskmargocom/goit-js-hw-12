@@ -14,5 +14,8 @@ export async function getImagesByQuery(query) {
             safesearch: true,
         },
     });
-    return response.data.totalHits;
+    return {
+        hits: response.data.hits,
+        totalHits: response.data.totalHits,
+    };
 }

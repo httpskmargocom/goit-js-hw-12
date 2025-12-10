@@ -42,8 +42,8 @@ export function hideLoader() {
     galleryContainer.classList.remove("loading")
 }
 export function showLoadMoreButton() {
-    LoadMoreButton.hidden = false;
+    loadMoreBtn.hidden = false;
 }
 export function hideLoadMoreButton() {
-    LoadMoreButton.hidden = true;
+    loadMoreBtn.hidden = true;
 }
