@@ -7,8 +7,11 @@ import { clearForm } from "./js/render-functions";
 const form = document.querySelector(".form");
 const gallery = document.querySelector(".gallery");
 const loadMoreBtn = document.querySelector(".load-more");
-const loader = document.querySelector(".loader")
 const perPage = 15;
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 let query = "";
 let page = 1;
@@ -30,7 +33,7 @@ form.addEventListener("submit", async (e) => {
     page = 1;
     clearGallery(gallery);
     hideLoadMoreButton(loadMoreBtn);
-    showLoader(loader);
+    showLoader();
 
     try {
         const data = await getImagesByQuery(query, page);
@@ -44,6 +47,8 @@ form.addEventListener("submit", async (e) => {
             return;
         }
 
+        await delay(2000)
+
         createGallery(data.hits, gallery);
 
         if (data.hits.length === perPage && page * perPage < totalHits) {
@@ -54,7 +59,7 @@ form.addEventListener("submit", async (e) => {
         iziToast.error({ message: "Error fetching images", position: "topRight" });
         console.error(err);
     } finally {
-        hideLoader(loader);
+        hideLoader();
         clearForm(form);
     }
 });
@@ -65,6 +70,9 @@ loadMoreBtn.addEventListener("click", async () => {
 
     try {
         const data = await getImagesByQuery(query, page);
+
+await delay(2000)
+
         createGallery(data.hits);
 
         const { height: cardHeight } =

@@ -62,15 +62,18 @@
 }
 
 .loader {
-  content: 'Loading...';
-  display: block;
-  text-align: center;
-  font-size: 18px;
-  color: #4e75ff;
-  padding: 20px 0;
-}
-.loader.is-hidden {
   display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  text-align: center;
+  color: #4e75ff;
+}
+
+.loader.is-visible {
+  display: block;
 }
 
 .load-more {
